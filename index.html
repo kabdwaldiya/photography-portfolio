@@ -1,0 +1,576 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Diya | A Hillside Soul</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f8f5f0;
+            color: #3f342d;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        /* NAVIGATION */
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 8%;
+            background: #f8f5f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 27px;
+            letter-spacing: 3px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #3f342d;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #a17c65;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 85vh;
+            background:
+                linear-gradient(rgba(0,0,0,0.38), rgba(0,0,0,0.38)),
+                url("images/photo1.jpeg") center/cover no-repeat;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 30px;
+        }
+
+        .hero-content {
+            animation: fadeUp 1.2s ease;
+        }
+
+        .hero-content p {
+            letter-spacing: 5px;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(45px, 8vw, 85px);
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .hero h3 {
+            font-weight: 300;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            margin-top: 35px;
+            padding: 14px 30px;
+            border: 1px solid white;
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .hero-btn:hover {
+            background: white;
+            color: #3f342d;
+        }
+
+        /* GENERAL SECTIONS */
+
+        section {
+            padding: 90px 9%;
+        }
+
+        .heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .subheading {
+            text-align: center;
+            color: #967d6c;
+            font-size: 13px;
+            letter-spacing: 2px;
+            margin-bottom: 50px;
+        }
+
+        /* GALLERY */
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            height: 370px;
+            background: #e8ded4;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.07);
+        }
+
+        .gallery-item::after {
+            content: "VIEW PHOTO";
+            position: absolute;
+            bottom: 18px;
+            left: 18px;
+            color: white;
+            font-size: 11px;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: 0.3s;
+            text-shadow: 0 1px 5px #000;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* LIGHTBOX */
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(20, 16, 13, 0.95);
+            justify-content: center;
+            align-items: center;
+            padding: 60px 70px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            object-fit: contain;
+        }
+
+        .lightbox button {
+            position: absolute;
+            border: none;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            font-size: 35px;
+            padding: 10px;
+        }
+
+        .close-btn {
+            top: 15px;
+            right: 25px;
+        }
+
+        .prev-btn {
+            left: 15px;
+            top: 50%;
+        }
+
+        .next-btn {
+            right: 15px;
+            top: 50%;
+        }
+
+        .photo-count {
+            position: absolute;
+            bottom: 20px;
+            color: white;
+            font-size: 13px;
+            letter-spacing: 2px;
+        }
+
+        /* ABOUT */
+
+        .about {
+            background: #eee6dc;
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 700px;
+            margin: auto;
+            line-height: 2;
+            font-size: 16px;
+            color: #67564b;
+        }
+
+        .about-content p {
+            margin-bottom: 18px;
+        }
+
+        /* CONTACT */
+
+        .contact {
+            text-align: center;
+        }
+
+        .contact p {
+            margin-bottom: 22px;
+            color: #78675c;
+        }
+
+        .insta-link {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background: #59483e;
+            padding: 14px 30px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .insta-link:hover {
+            background: #987763;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #3f342d;
+            color: #f8f5f0;
+            text-align: center;
+            padding: 30px 15px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            line-height: 2;
+        }
+
+        /* ANIMATION */
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+            nav {
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            nav ul {
+                gap: 17px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                min-height: 70vh;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-item {
+                height: 350px;
+            }
+
+            section {
+                padding: 65px 7%;
+            }
+
+            .heading {
+                font-size: 34px;
+            }
+
+            .lightbox {
+                padding: 50px 15px;
+            }
+
+            .lightbox img {
+                max-width: 100%;
+            }
+
+            .prev-btn {
+                left: 0;
+            }
+
+            .next-btn {
+                right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+
+    <nav>
+        <div class="logo">DIYA.</div>
+
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <p>WELCOME TO MY WORLD</p>
+            <h1>A Hillside Soul</h1>
+            <h3>Finding stories in little moments.</h3>
+
+            <a href="#gallery" class="hero-btn">
+                EXPLORE MY WORK
+            </a>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+
+    <section id="gallery">
+        <h2 class="heading">Through My Lens</h2>
+
+        <p class="subheading">
+            LITTLE MOMENTS · ENDLESS STORIES
+        </p>
+
+        <div class="gallery">
+
+            <div class="gallery-item">
+                <img src="images/photo1.jpeg" alt="Photography 1">
+            </div>
+
+            <div class="gallery-item">
+                <img src="images/photo2.jpeg" alt="Photography 2">
+            </div>
+
+            <div class="gallery-item">
+                <img src="images/photo3.jpeg" alt="Photography 3">
+            </div>
+
+            <div class="gallery-item">
+                <img src="images/photo4.jpeg" alt="Photography 4">
+            </div>
+
+            <div class="gallery-item">
+                <img src="images/photo5.jpeg" alt="Photography 5">
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PHOTO LIGHTBOX -->
+
+    <div class="lightbox" id="lightbox">
+        <button class="close-btn" id="closeLightbox"
+                aria-label="Close photo">&times;</button>
+
+        <button class="prev-btn" id="prevPhoto"
+                aria-label="Previous photo">&#10094;</button>
+
+        <img id="lightboxImage" src="" alt="Selected photograph">
+
+        <button class="next-btn" id="nextPhoto"
+                aria-label="Next photo">&#10095;</button>
+
+        <div class="photo-count" id="photoCount"></div>
+    </div>
+
+    <!-- ABOUT -->
+
+    <section class="about" id="about">
+        <h2 class="heading">Behind The Lens</h2>
+
+        <p class="subheading">A LITTLE ABOUT ME</p>
+
+        <div class="about-content">
+            <p>
+                Hi, I'm Diya. A beginner photographer
+                who finds beauty in nature, mountains,
+                little details and everyday moments.
+            </p>
+
+            <p>
+                Photography is more than just taking pictures.
+                It's about noticing the things we usually miss
+                and keeping a little piece of every moment alive.
+            </p>
+
+            <p>
+                Still learning, still exploring,
+                and always finding new stories to capture.
+            </p>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+
+    <section class="contact" id="contact">
+        <h2 class="heading">Let's Connect</h2>
+
+        <p>
+            Follow my photography journey and explore more frames.
+        </p>
+
+        <a
+            href="https://www.instagram.com/a_hillsidesoul_/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="insta-link">
+            FOLLOW ON INSTAGRAM
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+        <p>© 2026 DIYA | A HILLSIDE SOUL</p>
+        <p>Capturing moments, creating memories.</p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+        const galleryImages = document.querySelectorAll(".gallery-item img");
+
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImage = document.getElementById("lightboxImage");
+        const photoCount = document.getElementById("photoCount");
+
+        const closeButton = document.getElementById("closeLightbox");
+        const prevButton = document.getElementById("prevPhoto");
+        const nextButton = document.getElementById("nextPhoto");
+
+        let currentPhoto = 0;
+
+        function showPhoto(index) {
+            currentPhoto = (index + galleryImages.length) % galleryImages.length;
+
+            lightboxImage.src = galleryImages[currentPhoto].src;
+            lightboxImage.alt = galleryImages[currentPhoto].alt;
+
+            photoCount.textContent =
+                (currentPhoto + 1) + " / " + galleryImages.length;
+        }
+
+        function openLightbox(index) {
+            showPhoto(index);
+            lightbox.classList.add("active");
+            document.body.classList.add("no-scroll");
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove("active");
+            document.body.classList.remove("no-scroll");
+        }
+
+        galleryImages.forEach((image, index) => {
+            image.addEventListener("click", () => {
+                openLightbox(index);
+            });
+        });
+
+        closeButton.addEventListener("click", closeLightbox);
+
+        prevButton.addEventListener("click", () => {
+            showPhoto(currentPhoto - 1);
+        });
+
+        nextButton.addEventListener("click", () => {
+            showPhoto(currentPhoto + 1);
+        });
+
+        lightbox.addEventListener("click", (event) => {
+            if (event.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (!lightbox.classList.contains("active")) return;
+
+            if (event.key === "Escape") {
+                closeLightbox();
+            }
+
+            if (event.key === "ArrowRight") {
+                showPhoto(currentPhoto + 1);
+            }
+
+            if (event.key === "ArrowLeft") {
+                showPhoto(currentPhoto - 1);
+            }
+        });
+    </script>
+
+</body>
+</html>
